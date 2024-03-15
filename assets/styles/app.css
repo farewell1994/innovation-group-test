@@ -1,0 +1,98 @@
+body {
+    background-color: #17213a;
+}
+
+.simple-table {
+    border: 1px solid;
+    width: 100%;
+    border-color: #17213a;
+    border-radius: 5px;
+    border-spacing: 10px;
+    border-width: 2px;
+}
+
+.simple-table td,  .simple-table th{
+    text-align: center;
+    padding: 10px;
+    color: #17213a;
+}
+
+.simple-table th {
+    font-size: 18px;
+    border-bottom: 2px solid;
+    border-bottom-color: #17213a;
+}
+
+.simple-table td {
+    font-size: 16px;
+}
+
+.action-link {
+    font-size: large;
+    font-weight: bold;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    border: 1px solid #17213a;
+    color: #17213a;
+}
+.small-action-link {
+    font-size: small;
+    margin: 5px;
+    padding: 5px;
+}
+
+.header-block {
+    font-size: 18px;
+    font-weight: bold;
+    color: #17213a;
+}
+.simple-block {
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    margin: 5px;
+    color: #17213a;
+}
+
+.form-input-block p, .form-select-block p, .form-action-block p {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 5px 5px 5px 0px;
+    color: #17213a;
+    text-align: left;
+}
+.form-input-block input, .form-select-block select {
+    border: 1px solid #17213a;
+    border-radius: 3px;
+    height: 25px;
+    padding: 5px;
+    width: 100%;
+}
+
+.form-separator-block {
+    font-weight: bold;
+    padding: 5px;
+    margin-bottom: 15px;
+}
+.form-submit-block button {
+    background-color: white;
+    cursor: pointer;
+}
+.form-error {
+    text-align: left;
+    color: red;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.form-error ul {
+    list-style-type: none;
+    padding-inline-start: 0px;
+    margin-top: 5px;
+}
+.info-block {
+    text-align: right;
+}

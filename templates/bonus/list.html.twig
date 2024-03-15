@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bonuses{% endblock %}
+
+{% block body %}
+    <div class="simple-block info-block">
+        <a class="action-link small-action-link" href="{{ path('app_bonus_create') }}">Create a bonus</a>
+        <a class="action-link small-action-link" href="{{ path('app_client_list') }}">Clients</a>
+    </div>
+
+    {% for flashItems in app.flashes %}
+        {% for message in flashItems %}
+            <div class="simple-block">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="simple-block">
+
+        {% if bonuses %}
+            <h2>Bonuses</h2>
+            {{ _self.bonusesTable(bonuses) }}
+        {% else %}
+            <b>Bonuses not found</b>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% macro bonusesTable(bonuses) %}
+    <table class="simple-table">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+        {% for bonus in bonuses %}
+            <tr>
+                <td>{{ bonus.id }}</td>
+                <td>{{ bonus.name }}</td>
+                <td>{{ bonus.type.value }}</td>
+                <td>
+                    <a class="action-link small-action-link" href="{{ path('app_bonus_delete', {'bonus': bonus.id}) }}">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endmacro %}

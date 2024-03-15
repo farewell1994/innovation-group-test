@@ -14,3 +14,7 @@ test:
 	docker exec php82-container ./vendor/bin/simple-phpunit
 cache:
 	docker exec php82-container php bin/console cache:clear
+diff:
+	docker exec php82-container php bin/console doctrine:migration:diff
+migrate:
+	docker exec php82-container php bin/console doctrine:migration:migrate

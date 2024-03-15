@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block title %}Create a client{% endblock %}
+
+{% block body %}
+    <div class="simple-block">
+        <h2>Create a client</h2>
+        {{ form_start(client_form, {'attr': {'novalidate': true}}) }}
+        <div class="form-input-block"><p>Email</p>{{ form_widget(client_form.email) }}</div>
+        <div class="form-error">{{ form_errors(client_form.email) }}</div>
+        <div class="form-input-block"><p>Birthday</p>{{ form_widget(client_form.birthday) }}</div>
+        <div class="form-error">{{ form_errors(client_form.birthday) }}</div>
+        <div class="form-submit-block">{{ form_widget(client_form.save, {'label': 'Save a client', 'attr': {'class': 'action-link'}}) }}</div>
+        <div class="form-separator-block">
+            or
+        </div>
+        <div>
+            <a class="action-link" href="{{ path('app_client_list') }}">Back to list</a>
+        </div>
+        {{ form_end(client_form) }}
+    </div>
+{% endblock %}
