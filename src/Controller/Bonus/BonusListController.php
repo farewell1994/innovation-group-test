@@ -2,9 +2,8 @@
 
 namespace App\Controller\Bonus;
 
-use App\Entity\Bonus\Bonus;
+use App\Model\Paginator\BonusPaginator;
 use App\Model\Paginator\Paginator;
-use App\Model\Paginator\PaginatorFactory;
 use App\Repository\Bonus\BonusRepository;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -31,14 +30,18 @@ class BonusListController extends AbstractController
         description: 'List of bonuses',
         content: new OA\JsonContent(
             type: 'array',
-            items: new OA\Items(ref: new Model(type: Bonus::class, groups: ['api_response']))
+            items: new OA\Items(ref: new Model(type: BonusPaginator::class))
         )
     )]
     #[OA\Tag(name: 'Bonuses')]
-    public function __invoke(Request $request, BonusRepository $bonuses): Response
-    {
-        $paginator = PaginatorFactory::init($request);
+    public function __invoke(
+        Request $request,
+        BonusRepository $bonuses,
+        Paginator $paginator
+    ): Response {
+        $query = $bonuses->getBonusesQuery();
+        $paginator->paginate($query);
 
-        return $this->json($bonuses->getBonuses($paginator));
+        return $this->json($paginator, Response::HTTP_OK);
     }
 }

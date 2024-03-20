@@ -2,9 +2,8 @@
 
 namespace App\Controller\Client;
 
-use App\Entity\Client\Client;
+use App\Model\Paginator\ClientPaginator;
 use App\Model\Paginator\Paginator;
-use App\Model\Paginator\PaginatorFactory;
 use App\Repository\Client\ClientRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,14 +30,19 @@ class ClientListController extends AbstractController
         description: 'List of clients',
         content: new OA\JsonContent(
             type: 'array',
-            items: new OA\Items(ref: new Model(type: Client::class, groups: ['api_response']))
+            items: new OA\Items(ref: new Model(type: ClientPaginator::class))
         )
     )]
     #[OA\Tag(name: 'Clients')]
-    public function __invoke(Request $request, ClientRepository $clients): Response
-    {
-        $paginator = PaginatorFactory::init($request);
+    public function __invoke(
+        Request $request,
+        ClientRepository $clients,
+        Paginator $paginator
+    ): Response {
 
-        return $this->json($clients->findAll());
+        $query = $clients->getClientsQuery();
+        $paginator->paginate($query);
+
+        return $this->json($paginator, Response::HTTP_OK);
     }
 }

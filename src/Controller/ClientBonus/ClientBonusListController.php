@@ -2,7 +2,7 @@
 
 namespace App\Controller\ClientBonus;
 
-use App\Entity\ClientBonus\ClientBonus;
+use App\Model\Paginator\ClientBonusPaginator;
 use App\Model\Paginator\Paginator;
 use App\Repository\Client\ClientRepository;
 use App\Repository\ClientBonus\ClientBonusRepository;
@@ -30,17 +30,19 @@ class ClientBonusListController extends AbstractController
         description: 'List of client bonuses',
         content: new OA\JsonContent(
             type: 'array',
-            items: new OA\Items(ref: new Model(type: ClientBonus::class, groups: ['api_response']))
+            items: new OA\Items(ref: new Model(type: ClientBonusPaginator::class))
         )
     )]
     #[OA\Tag(name: 'Client bonuses')]
     public function __invoke(
         int $clientId,
         ClientBonusRepository $clientBonuses,
-        ClientRepository $clients
+        ClientRepository $clients,
+        Paginator $paginator
     ): Response {
         if ($client = $clients->find($clientId)) {
-            $data = $clientBonuses->getBonusesByClient($client);
+            $query = $clientBonuses->getBonusesByClientQuery($client);
+            $data = $paginator->paginate($query);
             $status = Response::HTTP_OK;
         } else {
             $data = "Client $clientId not found";

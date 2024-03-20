@@ -2,26 +2,63 @@
 
 namespace App\Model\Paginator;
 
-class Paginator
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator as OrmPaginator;
+use Symfony\Component\HttpFoundation\RequestStack;
+
+class Paginator implements \JsonSerializable
 {
     public const DEFAULT_LIMIT = 10;
 
-    private int $page;
+    private int $total;
 
     private int $limit;
 
-    private int $offset;
+    private int $pagesCount;
 
-    public function getPage(): int
-    {
-        return $this->page;
-    }
+    private int $currentPage;
 
-    public function setPage(int $page): Paginator
+    private array $items;
+
+    public function __construct(
+        private readonly RequestStack $requestStack
+    ) {}
+
+    public function paginate(QueryBuilder $query): Paginator
     {
-        $this->page = $page;
+        $this->initParams();
+        $paginator = new OrmPaginator($query);
+
+        $paginator
+            ->getQuery()
+            ->setFirstResult($this->limit * ($this->currentPage - 1))
+            ->setMaxResults($this->limit);
+
+        $this->total = $paginator->count();
+        $this->pagesCount = (int) ceil($paginator->count() / $paginator->getQuery()->getMaxResults());
+        $this->items = $paginator->getQuery()->getResult();
 
         return $this;
+    }
+
+    public function getTotal(): int
+    {
+        return $this->total;
+    }
+
+    public function getPagesCount(): int
+    {
+        return $this->pagesCount;
+    }
+
+    public function getItems(): array
+    {
+        return $this->items;
+    }
+
+    public function getCurrentPage(): int
+    {
+        return $this->currentPage;
     }
 
     public function getLimit(): int
@@ -29,22 +66,22 @@ class Paginator
         return $this->limit;
     }
 
-    public function setLimit(int $limit): Paginator
+    public function jsonSerialize(): array
     {
-        $this->limit = $limit;
-
-        return $this;
+        return [
+            'items' => $this->getItems(),
+            'total' => $this->getTotal(),
+            'limit' => $this->getLimit(),
+            'pagesCount' => $this->getPagesCount(),
+            'currentPage' => $this->getCurrentPage(),
+        ];
     }
 
-    public function getOffset(): int
+    private function initParams(): void
     {
-        return $this->offset;
-    }
+        $request = $this->requestStack->getMainRequest();
 
-    public function setOffset(int $offset): Paginator
-    {
-        $this->offset = $offset;
-
-        return $this;
+        $this->currentPage = $request->query->getInt('page', 1);
+        $this->limit = $request->query->getInt('limit', Paginator::DEFAULT_LIMIT);
     }
 }

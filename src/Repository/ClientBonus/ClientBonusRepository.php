@@ -5,6 +5,7 @@ namespace App\Repository\ClientBonus;
 use App\Entity\Client\Client;
 use App\Entity\ClientBonus\ClientBonus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ClientBonusRepository extends ServiceEntityRepository
@@ -14,7 +15,7 @@ class ClientBonusRepository extends ServiceEntityRepository
         parent::__construct($registry, ClientBonus::class);
     }
 
-    public function getBonusesByClient(Client $client): array
+    public function getBonusesByClientQuery(Client $client): QueryBuilder
     {
         $qb = $this->createQueryBuilder('cb');
         $e = $qb->expr();
@@ -22,8 +23,6 @@ class ClientBonusRepository extends ServiceEntityRepository
         return $qb
             ->join('cb.bonus', 'b')
             ->where($e->eq('cb.client', ':client'))
-            ->setParameter('client', $client->getId())
-            ->getQuery()
-            ->getResult();
+            ->setParameter('client', $client->getId());
     }
 }

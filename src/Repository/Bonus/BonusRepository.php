@@ -4,8 +4,8 @@ namespace App\Repository\Bonus;
 
 use App\Entity\Bonus\Bonus;
 use App\Enum\Bonus\BonusTypeEnum;
-use App\Model\Paginator\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class BonusRepository extends ServiceEntityRepository
@@ -39,13 +39,8 @@ class BonusRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getBonuses(Paginator $paginator): array
+    public function getBonusesQuery(): QueryBuilder
     {
-        return $this
-            ->createQueryBuilder('b')
-            ->setMaxResults($paginator->getLimit())
-            ->setFirstResult($paginator->getOffset())
-            ->getQuery()
-            ->getResult();
+        return $this->createQueryBuilder('b');
     }
 }
