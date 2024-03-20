@@ -6,6 +6,7 @@ use App\Controller\Traits\FormErrorsResponseTrait;
 use App\Entity\Client\Client;
 use App\Form\Type\Client\ClientFormType;
 use App\Manager\BaseManager;
+use App\Model\DTO\FormErrorResponseDTO;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes\MediaType;
 use OpenApi\Attributes\Schema;
@@ -28,6 +29,19 @@ class CreateClientController extends AbstractController
             ),
         ]
     )]
+    #[OA\Response(
+        response: Response::HTTP_OK,
+        description: 'Successfully action',
+        content: new OA\JsonContent(ref: new Model(type: Client::class, groups: ['api_response']))
+    )]
+    #[OA\Response(
+        response: Response::HTTP_BAD_REQUEST,
+        description: 'Bad request',
+        content: new OA\JsonContent(
+            type: 'array',
+            items: new OA\Items(ref: new Model(type: FormErrorResponseDTO::class))
+        )
+    )]
     #[OA\Tag(name: 'Clients')]
     public function __invoke(Request $request, BaseManager $manager): Response
     {
@@ -36,10 +50,16 @@ class CreateClientController extends AbstractController
         $form->handleRequest($request);
         $form->submit($request->request->all());
 
-        if ($form->isValid() && $manager->save($client)) {
-            return $this->json('Client was created successfully');
+        if ($form->isValid()) {
+            $manager->save($client);
+
+            $data = $client;
+            $status = Response::HTTP_OK;
         } else {
-            return $this->json($this->getFormattedFormErrors($form), Response::HTTP_BAD_REQUEST);
+            $data = $this->getFormattedFormErrors($form);
+            $status = Response::HTTP_BAD_REQUEST;
         }
+
+        return $this->json($data, $status);
     }
 }

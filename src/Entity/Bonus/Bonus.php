@@ -2,6 +2,7 @@
 
 namespace App\Entity\Bonus;
 
+use OpenApi\Attributes as OA;
 use App\Entity\ClientBonus\ClientBonus;
 use App\Entity\Traits\ActionDateTrait;
 use App\Enum\Bonus\BonusTypeEnum;
@@ -9,6 +10,7 @@ use App\Repository\Bonus\BonusRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BonusRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -19,12 +21,16 @@ class Bonus implements \JsonSerializable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["default", "api_response"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[OA\Property(type: 'string', maxLength: 255)]
+    #[Groups(["default", "api_response"])]
     private string $name;
 
     #[ORM\Column(type: 'string', enumType: BonusTypeEnum::class)]
+    #[Groups(["default", "api_response"])]
     private BonusTypeEnum $type;
 
     #[ORM\OneToMany(targetEntity: ClientBonus::class, mappedBy: 'bonus')]
@@ -70,7 +76,7 @@ class Bonus implements \JsonSerializable
             'id' => $this->getId(),
             'name' => $this->getName(),
             'type' => $this->getType()->value,
-            'dateCreate' => $this->getDateCreate(),
+            'dateCreate' => $this->getDateCreate()->format('c'),
         ];
     }
 }

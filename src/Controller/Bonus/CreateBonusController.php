@@ -33,7 +33,7 @@ class CreateBonusController extends AbstractController
     #[OA\Response(
         response: Response::HTTP_OK,
         description: 'Successfully action',
-        content: new OA\JsonContent(ref: new Model(type: Bonus::class))
+        content: new OA\JsonContent(ref: new Model(type: Bonus::class, groups: ['api_response']))
     )]
     #[OA\Response(
         response: Response::HTTP_BAD_REQUEST,
@@ -51,10 +51,16 @@ class CreateBonusController extends AbstractController
         $form->handleRequest($request);
         $form->submit($request->request->all());
 
-        if ($form->isValid() && $manager->save($bonus)) {
-            return $this->json($bonus, Response::HTTP_OK);
+        if ($form->isValid()) {
+            $manager->save($bonus);
+
+            $data = $bonus;
+            $status = Response::HTTP_OK;
         } else {
-            return $this->json($this->getFormattedFormErrors($form), Response::HTTP_BAD_REQUEST);
+            $data = $this->getFormattedFormErrors($form);
+            $status = Response::HTTP_BAD_REQUEST;
         }
+
+        return $this->json($data, $status);
     }
 }

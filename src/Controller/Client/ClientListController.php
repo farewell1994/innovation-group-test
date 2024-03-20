@@ -26,14 +26,14 @@ class ClientListController extends AbstractController
         in: 'query',
         schema: new OA\Schema(type: 'int', default: 1)
     )]
-//    #[OA\Response(
-//        response: Response::HTTP_OK,
-//        description: 'List of clients',
-//        content: new OA\JsonContent(
-//            type: 'array',
-//            items: new OA\Items(ref: new Model(type: Client::class))
-//        )
-//    )]
+    #[OA\Response(
+        response: Response::HTTP_OK,
+        description: 'List of clients',
+        content: new OA\JsonContent(
+            type: 'array',
+            items: new OA\Items(ref: new Model(type: Client::class, groups: ['api_response']))
+        )
+    )]
     #[OA\Tag(name: 'Clients')]
     public function __invoke(Request $request, ClientRepository $clients): Response
     {

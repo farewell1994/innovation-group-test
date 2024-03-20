@@ -3,20 +3,17 @@
 namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 trait ActionDateTrait
 {
     #[ORM\Column]
     private ?\DateTime $dateCreate = null;
 
+    #[Groups(["default", "api_response"])]
     public function getDateCreate(): \DateTime
     {
         return $this->dateCreate;
-    }
-
-    public function getFormattedCreateDate(): string
-    {
-        return $this->dateCreate->format('d.m.Y H:i');
     }
 
     #[ORM\PrePersist]

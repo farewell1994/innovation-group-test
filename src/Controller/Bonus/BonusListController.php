@@ -31,7 +31,7 @@ class BonusListController extends AbstractController
         description: 'List of bonuses',
         content: new OA\JsonContent(
             type: 'array',
-            items: new OA\Items(ref: new Model(type: Bonus::class))
+            items: new OA\Items(ref: new Model(type: Bonus::class, groups: ['api_response']))
         )
     )]
     #[OA\Tag(name: 'Bonuses')]
