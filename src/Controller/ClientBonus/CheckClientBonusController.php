@@ -3,9 +3,8 @@
 namespace App\Controller\ClientBonus;
 
 use App\Entity\Client\Client;
-use App\Entity\ClientBonus\ClientBonus;
-use App\Services\ClientBonus\BonusChecker;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use App\Services\ClientBonus\ClientBonusBuilder;
+use App\Services\ClientBonus\ClientBonusDirector;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,8 +22,12 @@ class CheckClientBonusController extends AbstractController
 //        )
 //    )]
     #[OA\Tag(name: 'Client bonuses')]
-    public function __invoke(Client $client, BonusChecker $bonusChecker): Response
-    {
-        return $this->json($bonusChecker->checkClientBonuses($client));
+    public function __invoke(
+        Client $client,
+        ClientBonusBuilder $clientBonusBuilder
+    ): Response {
+        $clientBonuses = (new ClientBonusDirector())->build($clientBonusBuilder, $client);
+
+        return $this->json($clientBonuses);
     }
 }

@@ -6,7 +6,6 @@ use App\Entity\Client\Client;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
@@ -20,12 +19,17 @@ class ClientFormType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'constraints' => [new NotBlank(), new Email()],
+                'documentation' => [
+                    'description' => 'Client email'
+                ],
             ])
             ->add('birthday', DateType::class, [
-//                'input' => 'string',
                 'input_format' => 'd.m.Y',
                 'widget' => 'single_text',
                 'constraints' => [new NotBlank(), new LessThan('now')],
+                'documentation' => [
+                    'description' => 'Client birthday (example 2018-03-22T23:00:00.000Z)',
+                ],
             ]);
     }
 
