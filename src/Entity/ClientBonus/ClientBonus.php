@@ -42,7 +42,6 @@ class ClientBonus implements \JsonSerializable
     public function setClient(Client $client): ClientBonus
     {
         $this->client = $client;
-        $this->client->addClientBonus($this);
 
         return $this;
     }

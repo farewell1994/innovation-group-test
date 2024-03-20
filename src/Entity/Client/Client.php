@@ -98,13 +98,6 @@ class Client implements \JsonSerializable
         return $this->birthday->format('d-m') === $today->format('d-m');
     }
 
-    public function addClientBonus(ClientBonus $clientBonus): Client
-    {
-        $this->clientBonuses->add($clientBonus);
-
-        return $this;
-    }
-
     public function getClientBonusesCount(): int
     {
         return $this->clientBonuses->count();
