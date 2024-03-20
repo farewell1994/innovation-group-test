@@ -20,19 +20,19 @@ class Client implements \JsonSerializable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["default", "api_response"])]
+    #[Groups(["api_response"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["default", "api_response"])]
+    #[Groups(["api_response"])]
     private string $email;
 
     #[ORM\Column(type: 'date')]
-    #[Groups(["default", "api_response"])]
+    #[Groups(["api_response"])]
     private \DateTime $birthday;
 
     #[ORM\Column]
-    #[Groups(["default", "api_response"])]
+    #[Groups(["api_response"])]
     private bool $isEmailVerified;
 
     #[ORM\OneToMany(targetEntity: ClientBonus::class, mappedBy: 'client')]
@@ -67,11 +67,6 @@ class Client implements \JsonSerializable
         return $this->birthday;
     }
 
-    public function getFormattedBirthday(): string
-    {
-        return $this->birthday->format('d.m.Y');
-    }
-
     public function setBirthday(\DateTime $birthday): Client
     {
         $this->birthday = $birthday;
@@ -91,21 +86,11 @@ class Client implements \JsonSerializable
         return $this;
     }
 
-    public function getClientBonuses(): Collection
-    {
-        return $this->clientBonuses;
-    }
-
     public function isBirthday(): bool
     {
         $today = new \DateTime('today');
 
         return $this->birthday->format('d-m') === $today->format('d-m');
-    }
-
-    public function getClientBonusesCount(): int
-    {
-        return $this->clientBonuses->count();
     }
 
     public function hasBonus(Bonus $bonus): bool

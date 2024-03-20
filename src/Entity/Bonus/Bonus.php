@@ -21,16 +21,16 @@ class Bonus implements \JsonSerializable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["default", "api_response"])]
+    #[Groups(["api_response"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[OA\Property(type: 'string', maxLength: 255)]
-    #[Groups(["default", "api_response"])]
+    #[Groups(["api_response"])]
     private string $name;
 
     #[ORM\Column(type: 'string', enumType: BonusTypeEnum::class)]
-    #[Groups(["default", "api_response"])]
+    #[Groups(["api_response"])]
     private BonusTypeEnum $type;
 
     #[ORM\OneToMany(targetEntity: ClientBonus::class, mappedBy: 'bonus')]
