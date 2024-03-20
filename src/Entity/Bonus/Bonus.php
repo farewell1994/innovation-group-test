@@ -79,4 +79,9 @@ class Bonus implements \JsonSerializable
             'dateCreate' => $this->getDateCreate()->format('c'),
         ];
     }
+
+    public function __toString(): string
+    {
+        return $this->getId();
+    }
 }
