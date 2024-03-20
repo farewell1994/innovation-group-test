@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Model;
+namespace App\Model\DTO;
 
 class FormErrorResponseDTOFactory
 {
-    public static function create(string $origin, string $message): FormErrorResponseDTO
+    public static function init(string $origin, string $message): FormErrorResponseDTO
     {
         return (new FormErrorResponseDTO())
             ->setOrigin($origin)

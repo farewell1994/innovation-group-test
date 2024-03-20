@@ -4,6 +4,7 @@ namespace App\Repository\Bonus;
 
 use App\Entity\Bonus\Bonus;
 use App\Enum\Bonus\BonusTypeEnum;
+use App\Model\Paginator\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -34,6 +35,16 @@ class BonusRepository extends ServiceEntityRepository
         return $qb
             ->andWhere($e->eq('b.type', ':hugType'))
             ->setParameter('hugType', BonusTypeEnum::HUG)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getBonuses(Paginator $paginator): array
+    {
+        return $this
+            ->createQueryBuilder('b')
+            ->setMaxResults($paginator->getLimit())
+            ->setFirstResult($paginator->getOffset())
             ->getQuery()
             ->getResult();
     }

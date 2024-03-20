@@ -6,6 +6,9 @@ use App\Controller\Traits\FormErrorsResponseTrait;
 use App\Entity\Client\Client;
 use App\Form\Type\Client\ClientFormType;
 use App\Manager\BaseManager;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes\MediaType;
+use OpenApi\Attributes\Schema;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +20,14 @@ class CreateClientController extends AbstractController
     use FormErrorsResponseTrait;
 
     #[Route('/api/client', methods: ['POST'])]
+    #[OA\RequestBody(
+        content: [
+            new MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new Schema(ref: new Model(type: ClientFormType::class))
+            ),
+        ]
+    )]
     #[OA\Tag(name: 'Clients')]
     public function __invoke(Request $request, BaseManager $manager): Response
     {

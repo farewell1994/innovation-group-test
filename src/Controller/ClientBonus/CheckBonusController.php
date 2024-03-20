@@ -49,7 +49,7 @@ class CheckBonusController extends AbstractController
                 }
             }
 
-//            $em->flush();
+            $em->flush();
         }
 
         return new JsonResponse($result);

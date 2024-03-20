@@ -22,15 +22,18 @@ class ClientFormType extends AbstractType
                 'constraints' => [new NotBlank(), new Email()],
             ])
             ->add('birthday', DateType::class, [
+//                'input' => 'string',
+                'input_format' => 'd.m.Y',
+                'widget' => 'single_text',
                 'constraints' => [new NotBlank(), new LessThan('now')],
-            ])
-            ->add('save', SubmitType::class);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Client::class,
+            'csrf_protection' => false,
         ]);
     }
 }

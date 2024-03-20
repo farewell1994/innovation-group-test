@@ -2,7 +2,7 @@
 
 namespace App\Controller\Traits;
 
-use App\Model\FormErrorResponseDTOFactory;
+use App\Model\DTO\FormErrorResponseDTOFactory;
 use Symfony\Component\Form\FormInterface;
 
 trait FormErrorsResponseTrait
@@ -12,7 +12,7 @@ trait FormErrorsResponseTrait
         $result = [];
 
         foreach ($form->getErrors(true) as $error) {
-            $result[] = FormErrorResponseDTOFactory::create(
+            $result[] = FormErrorResponseDTOFactory::init(
                 $error->getOrigin()->getName(),
                 $error->getMessage()
             );

@@ -7,15 +7,15 @@ use App\Entity\Bonus\Bonus;
 use App\Entity\Bonus\BonusFactory;
 use App\Form\Type\Bonus\BonusFormType;
 use App\Manager\BaseManager;
-use App\Model\FormErrorResponseDTO;
+use App\Model\DTO\FormErrorResponseDTO;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 use OpenApi\Attributes\MediaType;
 use OpenApi\Attributes\Schema;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use OpenApi\Attributes as OA;
 
 class CreateBonusController extends AbstractController
 {
