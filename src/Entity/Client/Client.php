@@ -40,7 +40,6 @@ class Client implements \JsonSerializable
 
     public function __construct()
     {
-        $this->birthday = new \DateTime();
         $this->isEmailVerified = false;
         $this->clientBonuses = new ArrayCollection();
     }

@@ -39,7 +39,6 @@ class ClientListController extends AbstractController
         ClientRepository $clients,
         Paginator $paginator
     ): Response {
-
         $query = $clients->getClientsQuery();
         $paginator->paginate($query);
 
