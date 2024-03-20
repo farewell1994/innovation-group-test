@@ -80,8 +80,10 @@ class Paginator implements \JsonSerializable
     private function initParams(): void
     {
         $request = $this->requestStack->getMainRequest();
+        $currentPage = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', Paginator::DEFAULT_LIMIT);
 
-        $this->currentPage = $request->query->getInt('page', 1);
-        $this->limit = $request->query->getInt('limit', Paginator::DEFAULT_LIMIT);
+        $this->currentPage = ($currentPage > 0) ? $currentPage : 1;
+        $this->limit = ($limit > 0) ? $limit : self::DEFAULT_LIMIT;
     }
 }

@@ -24,11 +24,10 @@ class ClientFormType extends AbstractType
                 ],
             ])
             ->add('birthday', DateType::class, [
-                'input_format' => 'd.m.Y',
                 'widget' => 'single_text',
                 'constraints' => [new NotBlank(), new LessThan('now')],
                 'documentation' => [
-                    'description' => 'Client birthday (example 2018-03-22T23:00:00.000Z)',
+                    'description' => 'Client birthday (Y-m-d)',
                 ],
             ]);
     }
