@@ -2,45 +2,33 @@
 
 namespace App\Controller\Client;
 
+use App\Controller\Traits\FormErrorsResponseTrait;
 use App\Entity\Client\Client;
 use App\Form\Type\Client\ClientFormType;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Manager\BaseManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use OpenApi\Attributes as OA;
 
 class CreateClientController extends AbstractController
 {
-    #[Route('/client/create', 'app_client_create')]
-    public function create(Request $request, EntityManagerInterface $em): Response
+    use FormErrorsResponseTrait;
+
+    #[Route('/api/client', methods: ['POST'])]
+    #[OA\Tag(name: 'Clients')]
+    public function __invoke(Request $request, BaseManager $manager): Response
     {
         $client = new Client();
-        $form = $this->getClientForm($client);
+        $form = $this->createForm(ClientFormType::class, $client);
         $form->handleRequest($request);
+        $form->submit($request->request->all());
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $em->persist($client);
-                $em->flush();
-                $this->addFlash('success', 'Client was successfully created');
-            } catch (\Exception $e) {
-                $this->addFlash('danger', $e->getMessage());
-            }
-
-            return $this->redirect($this->generateUrl('app_client_list'));
+        if ($form->isValid() && $manager->save($client)) {
+            return $this->json('Client was created successfully');
+        } else {
+            return $this->json($this->getFormattedFormErrors($form), Response::HTTP_BAD_REQUEST);
         }
-
-        return $this->render('client/create.html.twig', [
-            'client_form' => $form->createView()
-        ]);
-    }
-
-    private function getClientForm(Client $client): FormInterface
-    {
-        return $this->createForm(ClientFormType::class, $client, [
-            'action' => $this->generateUrl('app_client_create')
-        ]);
     }
 }

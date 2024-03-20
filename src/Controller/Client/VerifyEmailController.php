@@ -3,24 +3,20 @@
 namespace App\Controller\Client;
 
 use App\Entity\Client\Client;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Manager\Client\ClientManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use OpenApi\Attributes as OA;
 
 class VerifyEmailController extends AbstractController
 {
-    #[Route('/client/verify-email/{client}', 'app_client_verify_email')]
-    public function verifyEmail(Client $client, EntityManagerInterface $em): Response
+    #[Route('/api/client/verify-email/{client}', methods: ['PUT'])]
+    #[OA\Tag(name: 'Clients')]
+    public function __invoke(Client $client, ClientManager $manager): Response
     {
-        try {
-            $client->setIsEmailVerified(true);
-            $em->flush();
-            $this->addFlash('success', 'Email was successfully verified');
-        } catch (\Exception $e) {
-            $this->addFlash('danger', $e->getMessage());
-        }
+        $manager->verifyEmail($client);
 
-        return $this->redirect($this->generateUrl('app_client_list'));
+        return $this->json('Email was verified');
     }
 }

@@ -1,14 +1,17 @@
 <?php
 
-namespace App\Entity\Client;
+namespace App\Entity\ClientBonus;
 
 use App\Entity\Bonus\Bonus;
+use App\Entity\Client\Client;
 use App\Entity\Traits\ActionDateTrait;
+use OpenApi\Attributes as OA;
 
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-class ClientBonus
+#[ORM\HasLifecycleCallbacks]
+class ClientBonus implements \JsonSerializable
 {
     use ActionDateTrait;
 
@@ -18,11 +21,12 @@ class ClientBonus
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'bonuses')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Client $client;
 
     #[ORM\ManyToOne(targetEntity: Bonus::class, inversedBy: 'clients')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[OA\Property(type: 'int')]
     private Bonus $bonus;
 
     public function getId(): ?int
@@ -38,6 +42,7 @@ class ClientBonus
     public function setClient(Client $client): ClientBonus
     {
         $this->client = $client;
+        $this->client->addClientBonus($this);
 
         return $this;
     }
@@ -52,5 +57,15 @@ class ClientBonus
         $this->bonus = $bonus;
 
         return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'dateCreated' => $this->getDateCreate(),
+            'bonus' => $this->getBonus()->jsonSerialize(),
+            'client' => $this->getClient()->jsonSerialize(),
+        ];
     }
 }

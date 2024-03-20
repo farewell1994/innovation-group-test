@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Entity\Bonus;
-use App\Entity\Client\ClientBonus;
+
+use App\Entity\ClientBonus\ClientBonus;
 use App\Entity\Traits\ActionDateTrait;
 use App\Enum\Bonus\BonusTypeEnum;
 use App\Repository\Bonus\BonusRepository;
@@ -10,9 +11,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BonusRepository::class)]
-class Bonus
+#[ORM\HasLifecycleCallbacks]
+class Bonus implements \JsonSerializable
 {
     use ActionDateTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -29,7 +32,6 @@ class Bonus
 
     public function __construct()
     {
-        $this->dateCreate = new \DateTime();
         $this->clients = new ArrayCollection();
     }
 
@@ -60,5 +62,15 @@ class Bonus
         $this->type = $type;
 
         return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'type' => $this->getType()->value,
+            'dateCreate' => $this->getDateCreate(),
+        ];
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Entity\Client;
 
+use App\Entity\Bonus\Bonus;
+use App\Entity\ClientBonus\ClientBonus;
 use App\Entity\Traits\ActionDateTrait;
 use App\Repository\Client\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,7 +11,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
-class Client
+#[ORM\HasLifecycleCallbacks]
+class Client implements \JsonSerializable
 {
     use ActionDateTrait;
 
@@ -28,14 +31,13 @@ class Client
     private bool $isEmailVerified;
 
     #[ORM\OneToMany(targetEntity: ClientBonus::class, mappedBy: 'client')]
-    private Collection $bonuses;
+    private Collection $clientBonuses;
 
     public function __construct()
     {
-        $this->dateCreate = new \DateTime();
         $this->birthday = new \DateTime();
         $this->isEmailVerified = false;
-        $this->bonuses = new ArrayCollection();
+        $this->clientBonuses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -60,6 +62,11 @@ class Client
         return $this->birthday;
     }
 
+    public function getFormattedBirthday(): string
+    {
+        return $this->birthday->format('d.m.Y');
+    }
+
     public function setBirthday(\DateTime $birthday): Client
     {
         $this->birthday = $birthday;
@@ -77,5 +84,47 @@ class Client
         $this->isEmailVerified = $isEmailVerified;
 
         return $this;
+    }
+
+    public function getClientBonuses(): Collection
+    {
+        return $this->clientBonuses;
+    }
+
+    public function isBirthday(): bool
+    {
+        $today = new \DateTime('today');
+
+        return $this->birthday->format('d-m') === $today->format('d-m');
+    }
+
+    public function addClientBonus(ClientBonus $clientBonus): Client
+    {
+        $this->clientBonuses->add($clientBonus);
+
+        return $this;
+    }
+
+    public function getClientBonusesCount(): int
+    {
+        return $this->clientBonuses->count();
+    }
+
+    public function hasBonus(Bonus $bonus): bool
+    {
+        return $this->clientBonuses->exists(function ($key, $element) use ($bonus) {
+            return $element->getBonus() === $bonus;
+        });
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'email' => $this->getEmail(),
+            'birthday' => $this->getBirthday(),
+            'isEmailVerified' => $this->isEmailVerified(),
+            'dateCreate' => $this->getDateCreate(),
+        ];
     }
 }

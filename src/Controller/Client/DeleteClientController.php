@@ -3,24 +3,21 @@
 namespace App\Controller\Client;
 
 use App\Entity\Client\Client;
+use App\Manager\BaseManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use OpenApi\Attributes as OA;
 
 class DeleteClientController extends AbstractController
 {
-    #[Route('/client/delete/{client}', 'app_client_delete')]
-    public function create(Client $client, EntityManagerInterface $em): Response
+    #[Route('/api/client/{client}', methods: ['DELETE'])]
+    #[OA\Tag(name: 'Clients')]
+    public function __invoke(Client $client, BaseManager $manager): Response
     {
-        try {
-            $em->remove($client);
-            $em->flush();
-            $this->addFlash('success', 'Client was successfully deleted');
-        } catch (\Exception $e) {
-            $this->addFlash('danger', $e->getMessage());
-        }
+        $manager->delete($client);
 
-        return $this->redirect($this->generateUrl('app_client_list'));
+        return $this->json('Client was deleted successfully');
     }
 }

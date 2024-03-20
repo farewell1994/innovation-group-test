@@ -7,17 +7,23 @@ use Doctrine\ORM\Mapping as ORM;
 trait ActionDateTrait
 {
     #[ORM\Column]
-    private \DateTime $dateCreate;
+    private ?\DateTime $dateCreate = null;
 
     public function getDateCreate(): \DateTime
     {
         return $this->dateCreate;
     }
 
-    public function setDateCreate(\DateTime $dateCreate): self
+    public function getFormattedCreateDate(): string
     {
-        $this->dateCreate = $dateCreate;
+        return $this->dateCreate->format('d.m.Y H:i');
+    }
 
-        return $this;
+    #[ORM\PrePersist]
+    public function updateDateCreate(): void
+    {
+        if (!$this->dateCreate) {
+            $this->dateCreate = new \DateTime('now');
+        }
     }
 }

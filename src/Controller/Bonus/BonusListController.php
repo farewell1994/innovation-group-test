@@ -7,14 +7,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use OpenApi\Attributes as OA;
 
 class BonusListController extends AbstractController
 {
-    #[Route('/bonuses', 'app_bonus_list')]
-    public function list(Request $request, BonusRepository $bonuses): Response
+    #[Route('/api/bonus', methods: ['GET'])]
+    #[OA\Tag(name: 'Bonuses')]
+    public function __invoke(Request $request, BonusRepository $bonuses): Response
     {
-        return $this->render('bonus/list.html.twig', [
-            'bonuses' => $bonuses->findAll()
-        ]);
+        return $this->json($bonuses->findAll());
     }
 }
