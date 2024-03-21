@@ -7,6 +7,8 @@ In order to run app:
 - run 'make up' inside project directory for deployment
 - run 'make composer-install' inside project directory in order to install dependencies
 
+Please, wait a while for the database to be imported
+
 You may access to container console by command 'make shell'
 
 You have ready application for API demonstration.
