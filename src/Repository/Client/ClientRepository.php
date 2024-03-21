@@ -18,4 +18,18 @@ class ClientRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c');
     }
+
+    public function getClientsWithBonusesQuery(int $clientId): ?Client
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        return $qb
+            ->where($qb->expr()->eq('c.id', ':clientId'))
+            ->setParameter('clientId', $clientId)
+            ->leftJoin('c.clientBonuses', 'cb')
+            ->leftJoin('cb.bonus', 'b')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

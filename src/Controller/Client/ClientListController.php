@@ -2,15 +2,15 @@
 
 namespace App\Controller\Client;
 
-use App\Model\Paginator\ClientPaginator;
-use App\Model\Paginator\Paginator;
 use App\Repository\Client\ClientRepository;
+use App\Services\Paginator\ClientPaginator;
+use App\Services\Paginator\Paginator;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Nelmio\ApiDocBundle\Annotation\Model;
-use OpenApi\Attributes as OA;
 
 class ClientListController extends AbstractController
 {

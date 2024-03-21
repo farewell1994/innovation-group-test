@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Model\Paginator;
+namespace App\Services\Paginator;
 
 use App\Entity\ClientBonus\ClientBonus;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Symfony\Component\Serializer\Attribute\Groups;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 class ClientBonusPaginator extends Paginator
 {

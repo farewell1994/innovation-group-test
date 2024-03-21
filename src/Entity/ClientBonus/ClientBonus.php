@@ -25,7 +25,7 @@ class ClientBonus implements \JsonSerializable
     #[Groups(["api_response"])]
     private Client $client;
 
-    #[ORM\ManyToOne(targetEntity: Bonus::class, inversedBy: 'clients')]
+    #[ORM\ManyToOne(targetEntity: Bonus::class, fetch: 'EAGER', inversedBy: 'clients')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[Groups(["api_response"])]
     private Bonus $bonus;

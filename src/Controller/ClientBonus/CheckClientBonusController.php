@@ -36,7 +36,7 @@ class CheckClientBonusController extends AbstractController
         ClientBonusBuilder $clientBonusBuilder,
         ClientRepository $clients
     ): Response {
-        if ($client = $clients->find($clientId)) {
+        if ($client = $clients->getClientsWithBonusesQuery($clientId)) {
             $data = (new ClientBonusDirector())->build($clientBonusBuilder, $client);
             $status = Response::HTTP_OK;
         } else {

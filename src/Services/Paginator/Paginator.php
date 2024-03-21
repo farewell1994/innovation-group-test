@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Paginator;
+namespace App\Services\Paginator;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator as OrmPaginator;

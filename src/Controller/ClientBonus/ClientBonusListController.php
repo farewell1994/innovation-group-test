@@ -2,13 +2,13 @@
 
 namespace App\Controller\ClientBonus;
 
-use App\Model\Paginator\ClientBonusPaginator;
-use App\Model\Paginator\Paginator;
 use App\Repository\Client\ClientRepository;
 use App\Repository\ClientBonus\ClientBonusRepository;
+use App\Services\Paginator\ClientBonusPaginator;
+use App\Services\Paginator\Paginator;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use OpenApi\Attributes as OA;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 

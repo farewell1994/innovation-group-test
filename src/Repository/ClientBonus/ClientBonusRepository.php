@@ -22,7 +22,7 @@ class ClientBonusRepository extends ServiceEntityRepository
 
         return $qb
             ->join('cb.bonus', 'b')
-            ->join('cb.client', 'c')
+            ->addSelect('b')
             ->where($e->eq('cb.client', ':client'))
             ->setParameter('client', $client->getId());
     }

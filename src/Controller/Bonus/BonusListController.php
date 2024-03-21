@@ -2,9 +2,9 @@
 
 namespace App\Controller\Bonus;
 
-use App\Model\Paginator\BonusPaginator;
-use App\Model\Paginator\Paginator;
 use App\Repository\Bonus\BonusRepository;
+use App\Services\Paginator\BonusPaginator;
+use App\Services\Paginator\Paginator;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
