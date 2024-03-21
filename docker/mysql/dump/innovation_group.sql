@@ -1,6 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `innovation_group`
-CREATE DATABASE IF NOT EXISTS `innovation_group_test`
-
+CREATE DATABASE IF NOT EXISTS `innovation_group`;
+CREATE DATABASE IF NOT EXISTS `innovation_group_test`;
 USE `innovation_group`;
 
 DROP TABLE IF EXISTS `bonus`;
