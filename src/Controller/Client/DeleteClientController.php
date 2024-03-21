@@ -35,7 +35,7 @@ class DeleteClientController extends AbstractController
     ): JsonResponse {
         if ($client = $clients->find($clientId)) {
             $manager->delete($client);
-            $message = 'Client was deleted successfully';
+            $message = "Client $clientId was deleted successfully";
             $status = Response::HTTP_OK;
         } else {
             $message = "Client $clientId not found";

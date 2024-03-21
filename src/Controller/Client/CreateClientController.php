@@ -4,6 +4,7 @@ namespace App\Controller\Client;
 
 use App\Controller\Traits\FormErrorsResponseTrait;
 use App\Entity\Client\Client;
+use App\Entity\Client\ClientFactory;
 use App\Form\Type\Client\ClientFormType;
 use App\Manager\BaseManager;
 use App\Model\DTO\FormErrorResponseDTO;
@@ -45,7 +46,7 @@ class CreateClientController extends AbstractController
     #[OA\Tag(name: 'Clients')]
     public function __invoke(Request $request, BaseManager $manager): Response
     {
-        $client = new Client();
+        $client = ClientFactory::create();
         $form = $this->createForm(ClientFormType::class, $client);
         $form->handleRequest($request);
         $form->submit($request->request->all());

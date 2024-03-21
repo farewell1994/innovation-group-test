@@ -11,7 +11,7 @@ shell:
 composer-install:
 	docker exec php82-container composer install
 test:
-	docker exec php82-container ./vendor/bin/simple-phpunit
+	docker exec php82-container php bin/phpunit
 cache:
 	docker exec php82-container php bin/console cache:clear
 diff:

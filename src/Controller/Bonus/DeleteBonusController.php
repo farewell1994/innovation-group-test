@@ -35,7 +35,7 @@ class DeleteBonusController extends AbstractController
         if ($bonus = $bonuses->find($bonusId)) {
             $manager->delete($bonus);
 
-            $message = 'Bonus was deleted successfully';
+            $message = "Bonus $bonusId was deleted successfully";
             $status = Response::HTTP_OK;
         } else {
             $message = "Bonus $bonusId not found";

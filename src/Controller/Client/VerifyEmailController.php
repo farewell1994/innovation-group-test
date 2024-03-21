@@ -11,7 +11,7 @@ use OpenApi\Attributes as OA;
 
 class VerifyEmailController extends AbstractController
 {
-    #[Route('/api/client/verify-email/{clientId}', requirements: ['clientId' => '\d+'] , methods: ['PUT'])]
+    #[Route('/api/client/verify-email/{clientId}', requirements: ['clientId' => '\d+'] , methods: ['PATCH'])]
     #[OA\Response(
         response: Response::HTTP_OK,
         description: 'Successfully action',
@@ -35,7 +35,7 @@ class VerifyEmailController extends AbstractController
         if ($client = $clients->find($clientId)) {
             $manager->verifyEmail($client);
 
-            $message = 'Email was verified';
+            $message = "Client $clientId email was verified";
             $status = Response::HTTP_OK;
 
         } else {
