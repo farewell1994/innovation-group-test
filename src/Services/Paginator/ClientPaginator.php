@@ -16,5 +16,5 @@ class ClientPaginator extends Paginator
         items: new OA\Items(ref: new Model(type: Client::class, groups: ['api_response']))
     )]
     #[Groups(['api_response'])]
-    protected array $items;
+    private array $items;
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Client;
 
+use App\Controller\Traits\ResponseTrait;
 use App\Manager\BaseManager;
 use App\Repository\Client\ClientRepository;
 use OpenApi\Attributes as OA;
@@ -14,6 +15,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class DeleteClientController extends AbstractController
 {
+    use ResponseTrait;
+
     #[Route('/api/client/{clientId}', requirements: ['clientId' => '\d+'], methods: ['DELETE'])]
     #[OA\Response(
         response: Response::HTTP_OK,
@@ -37,13 +40,10 @@ class DeleteClientController extends AbstractController
     ): JsonResponse {
         if ($client = $clients->find($clientId)) {
             $manager->delete($client);
-            $message = "Client $clientId was deleted successfully";
-            $status = Response::HTTP_OK;
-        } else {
-            $message = "Client $clientId not found";
-            $status = Response::HTTP_BAD_REQUEST;
+
+            return $this->successResponse("Client $clientId was deleted successfully");
         }
 
-        return $this->json($message, $status);
+        return $this->errorResponse("Client $clientId not found");
     }
 }

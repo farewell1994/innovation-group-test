@@ -1,7 +1,7 @@
 # innovation-group-test
 
 In order to run app:
-- make sure that '_docker_' and '_docker-compose_' services are installed on your machine
+- make sure that _docker_ and _docker-compose_ services are installed on your machine
 - clone GitHub repository to your machine
 - copy .env.dist file to .env file (all parameters are correctly defined for work)
 - run **make up** inside project directory for deployment
