@@ -82,6 +82,6 @@ class Bonus implements \JsonSerializable
 
     public function __toString(): string
     {
-        return $this->getId();
+        return (string) $this->getId();
     }
 }

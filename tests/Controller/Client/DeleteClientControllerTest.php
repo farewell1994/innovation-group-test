@@ -46,13 +46,13 @@ class DeleteClientControllerTest extends WebTestCase
 
     private function getClientIdToDelete(): int
     {
-        /** @var ClientRepository $bonuses */
+        /** @var ClientRepository $clients */
         $clients = static::getContainer()
             ->get(ClientRepository::class);
 
         $qb = $clients->createQueryBuilder('c');
 
-        return $qb
+        return (int) $qb
             ->select('c.id')
             ->where($qb->expr()->eq('c.email',  ':emailToDelete'))
             ->setMaxResults(1)

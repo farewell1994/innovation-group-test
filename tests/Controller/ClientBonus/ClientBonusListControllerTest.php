@@ -66,13 +66,13 @@ class ClientBonusListControllerTest extends WebTestCase
 
     private function getClientId(): int
     {
-        /** @var ClientRepository $bonuses */
+        /** @var ClientRepository $clients */
         $clients = static::getContainer()
             ->get(ClientRepository::class);
 
         $qb = $clients->createQueryBuilder('c');
 
-        return $qb
+        return (int) $qb
             ->select('c.id')
             ->where($qb->expr()->eq('c.email',  ':email'))
             ->setMaxResults(1)
