@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller\Bonus;
 
 use App\Enum\Bonus\BonusTypeEnum;
@@ -29,7 +31,7 @@ class BonusListControllerTest extends WebTestCase
 
         $this->assertIsInt($content['total']);
         $this->assertSame($limit, $content['limit']);
-        $this->assertIsInt(1, $content['currentPage']);
+        $this->assertIsInt($content['currentPage']);
         $this->assertSame($content['pagesCount'], (int) ceil($content['total'] / $content['limit']));
         $this->assertIsArray($content['items']);
         $this->assertLessThanOrEqual($limit, count($content['items']));

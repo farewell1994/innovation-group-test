@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Bonus;
 
 use App\Controller\Traits\FormErrorsResponseTrait;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository\Bonus;
 
 use App\Entity\Bonus\Bonus;

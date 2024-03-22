@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Bonus;
 
 use App\Enum\Bonus\BonusTypeEnum;
