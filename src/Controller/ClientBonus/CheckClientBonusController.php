@@ -6,11 +6,11 @@ use App\Entity\ClientBonus\ClientBonus;
 use App\Repository\Client\ClientRepository;
 use App\Services\ClientBonus\ClientBonusBuilder;
 use App\Services\ClientBonus\ClientBonusDirector;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Nelmio\ApiDocBundle\Annotation\Model;
 
 class CheckClientBonusController extends AbstractController
 {

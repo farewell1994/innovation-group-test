@@ -17,17 +17,17 @@ class ClientBonus implements \JsonSerializable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["api_response"])]
+    #[Groups(['api_response'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'bonuses')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    #[Groups(["api_response"])]
+    #[Groups(['api_response'])]
     private Client $client;
 
     #[ORM\ManyToOne(targetEntity: Bonus::class, fetch: 'EAGER', inversedBy: 'clients')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    #[Groups(["api_response"])]
+    #[Groups(['api_response'])]
     private Bonus $bonus;
 
     public function getId(): ?int

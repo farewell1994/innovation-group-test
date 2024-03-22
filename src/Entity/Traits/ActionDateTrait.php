@@ -10,7 +10,7 @@ trait ActionDateTrait
     #[ORM\Column]
     private ?\DateTime $dateCreate = null;
 
-    #[Groups(["api_response"])]
+    #[Groups(['api_response'])]
     public function getDateCreate(): \DateTime
     {
         return $this->dateCreate;

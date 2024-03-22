@@ -22,7 +22,8 @@ class Paginator implements \JsonSerializable
 
     public function __construct(
         private readonly RequestStack $requestStack
-    ) {}
+    ) {
+    }
 
     public function paginate(QueryBuilder $query): Paginator
     {

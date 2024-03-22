@@ -4,10 +4,10 @@ namespace App\Controller\Bonus;
 
 use App\Manager\BaseManager;
 use App\Repository\Bonus\BonusRepository;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use OpenApi\Attributes as OA;
 
 class DeleteBonusController extends AbstractController
 {

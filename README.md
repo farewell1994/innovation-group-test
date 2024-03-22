@@ -9,10 +9,20 @@ In order to run app:
 
 Please, wait a while for the database to be imported
 
-You may access to container console by command 'make shell'
+You may access to container console by command **make shell**
 
 You have ready application for API demonstration.
 Available by url: localhost:8080/api/doc
 
-Also, you can run a commands:
-- 'make test' in project in order to run tests
+Also, you can run a command  **make test** in project in order to run tests
+
+Run **make phpstan** o
+
+
+
+
+
+
+
+
+r **make php_cs_fixer** for code control

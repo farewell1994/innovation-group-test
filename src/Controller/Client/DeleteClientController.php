@@ -4,11 +4,11 @@ namespace App\Controller\Client;
 
 use App\Manager\BaseManager;
 use App\Repository\Client\ClientRepository;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use OpenApi\Attributes as OA;
 
 class DeleteClientController extends AbstractController
 {

@@ -11,7 +11,8 @@ class ClientBonusBuilder implements CollectionBuilderInterface
     public function __construct(
         private readonly HugClientBonusChecker $hugClientBonusChecker,
         private readonly SmileClientBonusChecker $smileClientBonusChecker
-    ) {}
+    ) {
+    }
 
     private Client $client;
 

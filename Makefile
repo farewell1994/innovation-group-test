@@ -24,3 +24,7 @@ diff:
 	docker exec php82-container php bin/console doctrine:migration:diff
 migrate:
 	docker exec php82-container php bin/console doctrine:migration:migrate
+phpstan:
+	docker exec php82-container vendor/bin/phpstan analyse src tests
+php_cs_fixer:
+	docker exec php82-container vendor/bin/php-cs-fixer fix src

@@ -10,7 +10,8 @@ class BaseManager
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly LoggerInterface $logger,
-    ) {}
+    ) {
+    }
 
     public function save(object $entity): ?object
     {

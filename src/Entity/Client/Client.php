@@ -3,13 +3,13 @@
 namespace App\Entity\Client;
 
 use App\Entity\Bonus\Bonus;
-use Symfony\Component\Serializer\Attribute\Groups;
 use App\Entity\ClientBonus\ClientBonus;
 use App\Entity\Traits\ActionDateTrait;
 use App\Repository\Client\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -20,19 +20,19 @@ class Client implements \JsonSerializable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["api_response"])]
+    #[Groups(['api_response'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["api_response"])]
+    #[Groups(['api_response'])]
     private string $email;
 
     #[ORM\Column(type: 'date')]
-    #[Groups(["api_response"])]
+    #[Groups(['api_response'])]
     private \DateTime $birthday;
 
     #[ORM\Column]
-    #[Groups(["api_response"])]
+    #[Groups(['api_response'])]
     private bool $isEmailVerified;
 
     #[ORM\OneToMany(targetEntity: ClientBonus::class, mappedBy: 'client')]

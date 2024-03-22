@@ -13,6 +13,6 @@ class BonusPaginator extends Paginator
         type: 'array',
         items: new OA\Items(ref: new Model(type: Bonus::class, groups: ['api_response']))
     )]
-    #[Groups(["api_response"])]
+    #[Groups(['api_response'])]
     protected array $items;
 }

@@ -20,7 +20,7 @@ class ClientFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'constraints' => [new NotBlank(), new Email()],
                 'documentation' => [
-                    'description' => 'Client email'
+                    'description' => 'Client email',
                 ],
             ])
             ->add('birthday', DateType::class, [

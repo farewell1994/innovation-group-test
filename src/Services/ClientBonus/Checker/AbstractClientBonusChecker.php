@@ -15,7 +15,8 @@ abstract class AbstractClientBonusChecker
         protected readonly BonusRepository $bonuses,
         private readonly BaseManager $manager,
         private readonly LoggerInterface $logger,
-    ) {}
+    ) {
+    }
 
     abstract protected function isClientSuitable(Client $client): bool;
 

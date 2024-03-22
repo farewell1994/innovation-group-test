@@ -21,9 +21,9 @@ class DatabaseClearCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->em->createQuery('DELETE FROM ' . Bonus::class)->execute();
-        $this->em->createQuery('DELETE FROM ' . Client::class)->execute();
-        $this->em->createQuery('DELETE FROM ' . ClientBonus::class)->execute();
+        $this->em->createQuery('DELETE FROM '.Bonus::class)->execute();
+        $this->em->createQuery('DELETE FROM '.Client::class)->execute();
+        $this->em->createQuery('DELETE FROM '.ClientBonus::class)->execute();
 
         return Command::SUCCESS;
     }
