@@ -4,18 +4,22 @@ declare(strict_types=1);
 
 namespace App\Controller\Bonus;
 
+use App\Controller\Traits\ResponseTrait;
 use App\Repository\Bonus\BonusRepository;
 use App\Services\Paginator\BonusPaginator;
 use App\Services\Paginator\Paginator;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class BonusListController extends AbstractController
 {
+    use ResponseTrait;
+
     #[Route('/api/bonus', methods: ['GET'])]
     #[OA\Parameter(
         name: 'limit',
@@ -39,11 +43,11 @@ class BonusListController extends AbstractController
     public function __invoke(
         Request $request,
         BonusRepository $bonuses,
-        Paginator $paginator
-    ): Response {
+        BonusPaginator $paginator
+    ): JsonResponse {
         $query = $bonuses->getBonusesQuery();
         $paginator->paginate($query);
 
-        return $this->json($paginator, Response::HTTP_OK);
+        return $this->successResponse($paginator);
     }
 }

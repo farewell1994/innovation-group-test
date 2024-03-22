@@ -38,7 +38,7 @@ class Paginator implements \JsonSerializable
             ->setMaxResults($this->limit);
 
         $this->total = $paginator->count();
-        $this->pagesCount = (int) ceil($paginator->count() / $paginator->getQuery()->getMaxResults());
+        $this->pagesCount = (int) ceil($this->total / $paginator->getQuery()->getMaxResults());
         $this->items = $paginator->getQuery()->getResult();
 
         return $this;

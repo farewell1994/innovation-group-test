@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Bonus;
 
 use App\Controller\Traits\FormErrorsResponseTrait;
+use App\Controller\Traits\ResponseTrait;
 use App\Entity\Bonus\Bonus;
 use App\Entity\Bonus\BonusFactory;
 use App\Form\Type\Bonus\BonusFormType;
@@ -15,6 +16,7 @@ use OpenApi\Attributes as OA;
 use OpenApi\Attributes\MediaType;
 use OpenApi\Attributes\Schema;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,6 +24,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class CreateBonusController extends AbstractController
 {
     use FormErrorsResponseTrait;
+    use ResponseTrait;
 
     #[Route('/api/bonus', methods: ['POST'])]
     #[OA\RequestBody(
@@ -46,7 +49,7 @@ class CreateBonusController extends AbstractController
         )
     )]
     #[OA\Tag(name: 'Bonuses')]
-    public function __invoke(Request $request, BaseManager $manager): Response
+    public function __invoke(Request $request, BaseManager $manager): JsonResponse
     {
         $bonus = BonusFactory::create();
         $form = $this->createForm(BonusFormType::class, $bonus);
@@ -56,13 +59,9 @@ class CreateBonusController extends AbstractController
         if ($form->isValid()) {
             $manager->save($bonus);
 
-            $data = $bonus;
-            $status = Response::HTTP_OK;
-        } else {
-            $data = $this->getFormattedFormErrors($form);
-            $status = Response::HTTP_BAD_REQUEST;
+            return $this->successResponse($bonus);
         }
 
-        return $this->json($data, $status);
+        return $this->errorResponse($this->getFormattedFormErrors($form));
     }
 }

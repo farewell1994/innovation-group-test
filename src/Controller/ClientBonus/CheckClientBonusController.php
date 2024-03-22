@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\ClientBonus;
 
+use App\Controller\Traits\ResponseTrait;
 use App\Entity\ClientBonus\ClientBonus;
 use App\Repository\Client\ClientRepository;
 use App\Services\ClientBonus\ClientBonusBuilder;
@@ -11,11 +12,14 @@ use App\Services\ClientBonus\ClientBonusDirector;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class CheckClientBonusController extends AbstractController
 {
+    use ResponseTrait;
+
     #[Route('/api/client-bonus/{clientId}', requirements: ['clientId' => '\d+'], methods: ['POST'])]
     #[OA\Response(
         response: Response::HTTP_OK,
@@ -37,15 +41,13 @@ class CheckClientBonusController extends AbstractController
         int $clientId,
         ClientBonusBuilder $clientBonusBuilder,
         ClientRepository $clients
-    ): Response {
+    ): JsonResponse {
         if ($client = $clients->getClientsWithBonusesQuery($clientId)) {
             $data = (new ClientBonusDirector())->build($clientBonusBuilder, $client);
-            $status = Response::HTTP_OK;
-        } else {
-            $data = "Client $clientId not found";
-            $status = Response::HTTP_BAD_REQUEST;
+
+            return $this->successResponse($data);
         }
 
-        return $this->json($data, $status);
+        return $this->errorResponse("Client $clientId not found");
     }
 }

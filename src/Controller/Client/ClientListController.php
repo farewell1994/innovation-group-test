@@ -4,18 +4,22 @@ declare(strict_types=1);
 
 namespace App\Controller\Client;
 
+use App\Controller\Traits\ResponseTrait;
 use App\Repository\Client\ClientRepository;
 use App\Services\Paginator\ClientPaginator;
 use App\Services\Paginator\Paginator;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class ClientListController extends AbstractController
 {
+    use ResponseTrait;
+
     #[Route('/api/client', methods: ['GET'])]
     #[OA\Parameter(
         name: 'limit',
@@ -39,11 +43,11 @@ class ClientListController extends AbstractController
     public function __invoke(
         Request $request,
         ClientRepository $clients,
-        Paginator $paginator
-    ): Response {
+        ClientPaginator $paginator
+    ): JsonResponse {
         $query = $clients->getClientsQuery();
         $paginator->paginate($query);
 
-        return $this->json($paginator, Response::HTTP_OK);
+        return $this->successResponse($paginator);
     }
 }
