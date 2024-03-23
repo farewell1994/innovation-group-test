@@ -41,11 +41,11 @@ class BonusRepository extends ServiceEntityRepository
         $existingClientBonusesSubQuery = $this
             ->getEntityManager()
             ->createQueryBuilder()
+            ->select('_b.id')
             ->from(ClientBonus::class, 'cb')
             ->join('cb.bonus', '_b')
-            ->select('_b.id')
             ->where($e->eq('cb.client', ':client'))
-            ->andWhere($e->eq('b.type', ':bonusType'));
+            ->andWhere($e->eq('_b.type', ':bonusType'));
 
         return $qb
             ->where($e->eq('b.type', ':bonusType'))
