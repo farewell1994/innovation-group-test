@@ -22,12 +22,12 @@ abstract class AbstractClientBonusChecker
 
     abstract protected function isClientSuitable(Client $client): bool;
 
-    abstract protected function getAvailableBonuses(): array;
+    abstract protected function getAvailableBonuses(Client $client): array;
 
     public function checkClientBonuses(Client $client): array
     {
         return $this->isClientSuitable($client)
-            ? $this->applyBonusesForClient($client, $this->getAvailableBonuses())
+            ? $this->applyBonusesForClient($client, $this->getAvailableBonuses($client))
             : [];
     }
 
