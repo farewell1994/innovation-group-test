@@ -13,8 +13,8 @@ class HugClientBonusChecker extends AbstractClientBonusChecker
         return $client->isBirthday();
     }
 
-    protected function getAvailableBonuses(): array
+    protected function getAvailableBonuses(Client $client): array
     {
-        return $this->bonuses->getHugBonuses();
+        return $this->bonuses->getHugBonuses($client);
     }
 }

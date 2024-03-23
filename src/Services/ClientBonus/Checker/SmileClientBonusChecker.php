@@ -13,8 +13,8 @@ class SmileClientBonusChecker extends AbstractClientBonusChecker
         return $client->isEmailVerified();
     }
 
-    protected function getAvailableBonuses(): array
+    protected function getAvailableBonuses(Client $client): array
     {
-        return $this->bonuses->getSmileBonuses();
+        return $this->bonuses->getSmileBonuses($client);
     }
 }
