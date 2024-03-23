@@ -44,7 +44,8 @@ class BonusRepository extends ServiceEntityRepository
             ->from(ClientBonus::class, 'cb')
             ->join('cb.bonus', '_b')
             ->select('_b.id')
-            ->where($e->eq('cb.client', ':client'));
+            ->where($e->eq('cb.client', ':client'))
+            ->andWhere($e->eq('b.type', ':bonusType'));
 
         return $qb
             ->where($e->eq('b.type', ':bonusType'))
