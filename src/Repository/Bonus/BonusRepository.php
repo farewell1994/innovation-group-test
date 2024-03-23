@@ -24,12 +24,12 @@ class BonusRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('b');
     }
 
-    public function getHugBonuses(Client $client): array
+    public function getHugBonusesForClient(Client $client): array
     {
         return $this->getBonusesForClient($client, BonusTypeEnum::HUG);
     }
 
-    public function getSmileBonuses(Client $client): array
+    public function getSmileBonusesForClient(Client $client): array
     {
         return $this->getBonusesForClient($client, BonusTypeEnum::SMILE);
     }
