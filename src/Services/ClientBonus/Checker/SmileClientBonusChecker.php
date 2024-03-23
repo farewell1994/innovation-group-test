@@ -15,6 +15,6 @@ class SmileClientBonusChecker extends AbstractClientBonusChecker
 
     protected function getAvailableBonuses(Client $client): array
     {
-        return $this->bonuses->getSmileBonuses($client);
+        return $this->bonuses->getSmileBonusesForClient($client);
     }
 }
