@@ -51,7 +51,7 @@ class CreateBonusController extends AbstractController
     #[OA\Tag(name: 'Bonuses')]
     public function __invoke(Request $request, BaseManager $manager): JsonResponse
     {
-        $bonus = BonusFactory::create();
+        $bonus = BonusFactory::init();
         $form = $this->createForm(BonusFormType::class, $bonus);
         $form->handleRequest($request);
         $form->submit($request->request->all());

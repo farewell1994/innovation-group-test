@@ -51,7 +51,7 @@ class CreateClientController extends AbstractController
     #[OA\Tag(name: 'Clients')]
     public function __invoke(Request $request, BaseManager $manager): JsonResponse
     {
-        $client = ClientFactory::create();
+        $client = ClientFactory::init();
         $form = $this->createForm(ClientFormType::class, $client);
         $form->handleRequest($request);
         $form->submit($request->request->all());

@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace App\Services\ClientBonus;
 
 use App\Entity\Client\Client;
-use App\Services\ClientBonus\Checker\HugClientBonusChecker;
-use App\Services\ClientBonus\Checker\SmileClientBonusChecker;
+use App\Services\ClientBonus\Checker\ClientBonusCheckerInterface;
+use App\Services\ClientBonus\Checker\ClientBonusCheckerPool;
 
 class ClientBonusBuilder implements CollectionBuilderInterface
 {
     public function __construct(
-        private readonly HugClientBonusChecker $hugClientBonusChecker,
-        private readonly SmileClientBonusChecker $smileClientBonusChecker
+        private readonly ClientBonusCheckerPool $clientBonusCheckerPool
     ) {
     }
 
@@ -27,10 +26,10 @@ class ClientBonusBuilder implements CollectionBuilderInterface
 
     public function addElements(): void
     {
-        $this->bonuses = array_merge(
-            $this->hugClientBonusChecker->checkClientBonuses($this->client),
-            $this->smileClientBonusChecker->checkClientBonuses($this->client)
-        );
+        /** @var ClientBonusCheckerInterface $clientBonusChecker */
+        foreach ($this->clientBonusCheckerPool->getClientBonusCheckers() as $clientBonusChecker) {
+            $this->bonuses = array_merge($this->bonuses, $clientBonusChecker->checkClientBonuses($this->client));
+        }
     }
 
     public function getCollection(): array
