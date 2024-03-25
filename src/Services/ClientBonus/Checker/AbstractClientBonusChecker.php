@@ -11,7 +11,7 @@ use App\Manager\BaseManager;
 use App\Repository\Bonus\BonusRepository;
 use Psr\Log\LoggerInterface;
 
-abstract class AbstractClientBonusChecker
+abstract class AbstractClientBonusChecker implements ClientBonusCheckerInterface
 {
     public function __construct(
         protected readonly BonusRepository $bonuses,

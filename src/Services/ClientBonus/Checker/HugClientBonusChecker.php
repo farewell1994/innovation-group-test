@@ -15,6 +15,6 @@ class HugClientBonusChecker extends AbstractClientBonusChecker
 
     protected function getAvailableBonuses(Client $client): array
     {
-        return $this->bonuses->getHugBonusesForCLient($client);
+        return $this->bonuses->getHugBonusesForClient($client);
     }
 }
