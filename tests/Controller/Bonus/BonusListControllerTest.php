@@ -11,7 +11,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class BonusListControllerTest extends WebTestCase
 {
-    use AssertPaginationTrait, AssertBonusTrait, ProcessResponseTrait;
+    use AssertPaginationTrait;
+    use AssertBonusTrait;
+    use ProcessResponseTrait;
 
     public function testList(): void
     {
@@ -23,7 +25,7 @@ class BonusListControllerTest extends WebTestCase
             '/api/bonus',
             [
                 'page' => 1,
-                'limit' => $limit
+                'limit' => $limit,
             ],
         );
 

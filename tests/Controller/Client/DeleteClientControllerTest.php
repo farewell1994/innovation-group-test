@@ -23,7 +23,7 @@ class DeleteClientControllerTest extends WebTestCase
 
         $client->request(
             'DELETE',
-            '/api/client/' . $clientId,
+            '/api/client/'.$clientId,
         );
 
         $content = $this->processSuccessResponse($client->getResponse()->getContent());
@@ -37,7 +37,7 @@ class DeleteClientControllerTest extends WebTestCase
         $clientId = 9999999;
         $client->request(
             'DELETE',
-            '/api/client/' . $clientId,
+            '/api/client/'.$clientId,
         );
 
         $content = $this->processErrorResponse($client->getResponse()->getContent());

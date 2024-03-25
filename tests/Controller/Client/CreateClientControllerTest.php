@@ -12,7 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CreateClientControllerTest extends WebTestCase
 {
-    use ProcessResponseTrait, AssertClientTrait;
+    use ProcessResponseTrait;
+    use AssertClientTrait;
 
     public function testSuccessfullyClientCreate(): void
     {
@@ -66,7 +67,7 @@ class CreateClientControllerTest extends WebTestCase
         $this->assertSame([
             [
                 'origin' => 'email',
-                'message' => 'This value should not be blank.'
+                'message' => 'This value should not be blank.',
             ],
         ], $content);
     }

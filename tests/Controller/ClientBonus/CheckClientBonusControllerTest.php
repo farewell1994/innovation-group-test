@@ -12,7 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class CheckClientBonusControllerTest extends WebTestCase
 {
-    use AssertClientBonusTrait, ProcessResponseTrait;
+    use AssertClientBonusTrait;
+    use ProcessResponseTrait;
 
     public function testCheckClientBonusSuccess(): void
     {
@@ -24,7 +25,7 @@ class CheckClientBonusControllerTest extends WebTestCase
 
         $client->request(
             'POST',
-            '/api/client-bonus/' . $clientId,
+            '/api/client-bonus/'.$clientId,
         );
 
         $content = $this->processSuccessResponse($client->getResponse()->getContent());
@@ -42,7 +43,7 @@ class CheckClientBonusControllerTest extends WebTestCase
 
         $client->request(
             'POST',
-            '/api/client-bonus/' . $clientId,
+            '/api/client-bonus/'.$clientId,
         );
 
         $content = $this->processErrorResponse($client->getResponse()->getContent());

@@ -13,7 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CreateBonusControllerTest extends WebTestCase
 {
-    use ProcessResponseTrait, AssertBonusTrait;
+    use ProcessResponseTrait;
+    use AssertBonusTrait;
 
     public function testSuccessfullySmileBonusCreate(): void
     {
@@ -84,12 +85,12 @@ class CreateBonusControllerTest extends WebTestCase
         $this->assertSame([
             [
                 'origin' => 'name',
-                'message' => 'This value should not be blank.'
+                'message' => 'This value should not be blank.',
             ],
             [
                 'origin' => 'type',
-                'message' => 'This value should not be blank.'
-            ]
+                'message' => 'This value should not be blank.',
+            ],
         ], $content);
     }
 

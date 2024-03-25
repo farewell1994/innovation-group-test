@@ -6,7 +6,9 @@ namespace App\Tests\Controller\Traits;
 
 trait AssertClientBonusTrait
 {
-    use AssertClientTrait, AssertBonusTrait;
+    use AssertClientTrait;
+    use AssertBonusTrait;
+
     public function assertClientBonus(array $content, int $clientId): void
     {
         $this->assertIsInt($content['id']);

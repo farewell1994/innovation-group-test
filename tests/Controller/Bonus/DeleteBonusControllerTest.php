@@ -23,7 +23,7 @@ class DeleteBonusControllerTest extends WebTestCase
 
         $client->request(
             'DELETE',
-            '/api/bonus/' . $bonusId,
+            '/api/bonus/'.$bonusId,
         );
 
         $content = $this->processSuccessResponse($client->getResponse()->getContent());
@@ -37,7 +37,7 @@ class DeleteBonusControllerTest extends WebTestCase
         $clientId = 9999999;
         $client->request(
             'DELETE',
-            '/api/bonus/' . $clientId,
+            '/api/bonus/'.$clientId,
         );
 
         $content = $this->processErrorResponse($client->getResponse()->getContent());
