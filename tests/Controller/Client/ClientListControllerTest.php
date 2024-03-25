@@ -11,7 +11,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ClientListControllerTest extends WebTestCase
 {
-    use AssertPaginationTrait, AssertClientTrait, ProcessResponseTrait;
+    use AssertPaginationTrait;
+    use AssertClientTrait;
+    use ProcessResponseTrait;
 
     public function testList(): void
     {
@@ -23,7 +25,7 @@ class ClientListControllerTest extends WebTestCase
             '/api/client',
             [
                 'page' => 1,
-                'limit' => $limit
+                'limit' => $limit,
             ]
         );
 

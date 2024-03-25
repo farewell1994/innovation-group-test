@@ -13,7 +13,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ClientBonusListControllerTest extends WebTestCase
 {
-    use AssertPaginationTrait, AssertClientBonusTrait, ProcessResponseTrait;
+    use AssertPaginationTrait;
+    use AssertClientBonusTrait;
+    use ProcessResponseTrait;
 
     public function testListSuccess(): void
     {
@@ -26,10 +28,10 @@ class ClientBonusListControllerTest extends WebTestCase
 
         $client->request(
             'GET',
-            '/api/client-bonus/' . $clientId,
+            '/api/client-bonus/'.$clientId,
             [
                 'page' => 1,
-                'limit' => $limit
+                'limit' => $limit,
             ],
         );
 
@@ -48,7 +50,7 @@ class ClientBonusListControllerTest extends WebTestCase
 
         $client->request(
             'GET',
-            '/api/client-bonus/' . $clientId,
+            '/api/client-bonus/'.$clientId,
         );
 
         $content = $this->processErrorResponse($client->getResponse()->getContent());

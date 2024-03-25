@@ -23,7 +23,7 @@ class VerifyEmailControllerTest extends WebTestCase
 
         $client->request(
             'PATCH',
-            '/api/client/verify-email/' . $clientId,
+            '/api/client/verify-email/'.$clientId,
         );
 
         $content = $this->processSuccessResponse($client->getResponse()->getContent());
@@ -38,7 +38,7 @@ class VerifyEmailControllerTest extends WebTestCase
 
         $client->request(
             'PATCH',
-            '/api/client/verify-email/' . $clientId,
+            '/api/client/verify-email/'.$clientId,
         );
 
         $content = $this->processErrorResponse($client->getResponse()->getContent());
