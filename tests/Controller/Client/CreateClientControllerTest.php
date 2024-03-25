@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Client;
 
 use App\Entity\Client\ClientFactory;
+use App\Tests\Controller\Traits\AssertClientTrait;
+use App\Tests\Controller\Traits\ProcessResponseTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateClientControllerTest extends WebTestCase
 {
+    use ProcessResponseTrait, AssertClientTrait;
+
     public function testSuccessfullyClientCreate(): void
     {
         $email = ClientFactory::TEST_EMAIL;
@@ -57,11 +61,7 @@ class CreateClientControllerTest extends WebTestCase
             ['CONTENT_TYPE' => 'multipart/form-data']
         );
 
-        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
-        $this->assertResponseHeaderSame('content-type', 'application/json');
-
-        $response = $client->getResponse();
-        $content = json_decode($response->getContent(), true);
+        $content = $this->processErrorResponse($client->getResponse()->getContent());
 
         $this->assertSame([
             [
@@ -73,13 +73,8 @@ class CreateClientControllerTest extends WebTestCase
 
     private function assertSuccessResponse(Response $response, string $email, string $birthday): void
     {
-        $this->assertResponseIsSuccessful();
-        $this->assertResponseHeaderSame('content-type', 'application/json');
-
-        $content = json_decode($response->getContent(), true);
-
-        $this->assertIsInt($content['id']);
-        $this->assertIsString($content['dateCreate']);
+        $content = $this->processSuccessResponse($response->getContent());
+        $this->assertClient($content);
         $this->assertSame($email, $content['email']);
         $this->assertStringContainsString($birthday, $content['birthday']);
     }

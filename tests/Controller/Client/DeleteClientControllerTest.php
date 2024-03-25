@@ -6,25 +6,27 @@ namespace App\Tests\Controller\Client;
 
 use App\Entity\Client\ClientFactory;
 use App\Repository\Client\ClientRepository;
+use App\Tests\Controller\Traits\ProcessResponseTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Response;
 
 class DeleteClientControllerTest extends WebTestCase
 {
+    use ProcessResponseTrait;
+
     public function testSuccessDelete(): void
     {
         $client = static::createClient();
-        $clientId = $this->getClientIdToDelete();
+        $clientId = static::getContainer()
+            ->get(ClientRepository::class)
+            ->findOneByEmail(ClientFactory::TEST_EMAIL_TO_DELETE)
+            ?->getId();
 
         $client->request(
             'DELETE',
             '/api/client/' . $clientId,
         );
 
-        $this->assertResponseIsSuccessful();
-        $this->assertResponseHeaderSame('content-type', 'application/json');
-
-        $content = json_decode($client->getResponse()->getContent(), true);
+        $content = $this->processSuccessResponse($client->getResponse()->getContent());
 
         $this->assertSame("Client $clientId was deleted successfully", $content);
     }
@@ -38,28 +40,8 @@ class DeleteClientControllerTest extends WebTestCase
             '/api/client/' . $clientId,
         );
 
-        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
-        $this->assertResponseHeaderSame('content-type', 'application/json');
-
-        $content = json_decode($client->getResponse()->getContent(), true);
+        $content = $this->processErrorResponse($client->getResponse()->getContent());
 
         $this->assertSame("Client $clientId not found", $content);
-    }
-
-    private function getClientIdToDelete(): int
-    {
-        /** @var ClientRepository $clients */
-        $clients = static::getContainer()
-            ->get(ClientRepository::class);
-
-        $qb = $clients->createQueryBuilder('c');
-
-        return (int) $qb
-            ->select('c.id')
-            ->where($qb->expr()->eq('c.email',  ':emailToDelete'))
-            ->setMaxResults(1)
-            ->setParameter('emailToDelete', ClientFactory::TEST_EMAIL_TO_DELETE)
-            ->getQuery()
-            ->getSingleScalarResult();
     }
 }
