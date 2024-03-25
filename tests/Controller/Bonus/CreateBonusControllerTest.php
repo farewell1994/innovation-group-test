@@ -6,11 +6,15 @@ namespace App\Tests\Controller\Bonus;
 
 use App\Entity\Bonus\BonusFactory;
 use App\Enum\Bonus\BonusTypeEnum;
+use App\Tests\Controller\Traits\AssertBonusTrait;
+use App\Tests\Controller\Traits\ProcessResponseTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateBonusControllerTest extends WebTestCase
 {
+    use ProcessResponseTrait, AssertBonusTrait;
+
     public function testSuccessfullySmileBonusCreate(): void
     {
         $client = static::createClient();
@@ -75,11 +79,7 @@ class CreateBonusControllerTest extends WebTestCase
             ['CONTENT_TYPE' => 'multipart/form-data']
         );
 
-        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
-        $this->assertResponseHeaderSame('content-type', 'application/json');
-
-        $response = $client->getResponse();
-        $content = json_decode($response->getContent(), true);
+        $content = $this->processErrorResponse($client->getResponse()->getContent());
 
         $this->assertSame([
             [
@@ -95,13 +95,8 @@ class CreateBonusControllerTest extends WebTestCase
 
     private function assertSuccessResponse(Response $response, string $bonusName, string $bonusType): void
     {
-        $content = json_decode($response->getContent(), true);
-
-        $this->assertResponseIsSuccessful();
-        $this->assertResponseHeaderSame('content-type', 'application/json');
-
-        $this->assertIsInt($content['id']);
-        $this->assertIsString($content['dateCreate']);
+        $content = $this->processSuccessResponse($response->getContent());
+        $this->assertBonus($content);
         $this->assertSame($bonusName, $content['name']);
         $this->assertSame($bonusType, $content['type']);
     }

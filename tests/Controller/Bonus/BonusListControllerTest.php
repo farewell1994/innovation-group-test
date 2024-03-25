@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Bonus;
 
-use App\Enum\Bonus\BonusTypeEnum;
+use App\Tests\Controller\Traits\AssertBonusTrait;
+use App\Tests\Controller\Traits\AssertPaginationTrait;
+use App\Tests\Controller\Traits\ProcessResponseTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class BonusListControllerTest extends WebTestCase
 {
+    use AssertPaginationTrait, AssertBonusTrait, ProcessResponseTrait;
+
     public function testList(): void
     {
         $client = static::createClient();
@@ -23,25 +27,11 @@ class BonusListControllerTest extends WebTestCase
             ],
         );
 
-        $this->assertResponseIsSuccessful();
-        $this->assertResponseHeaderSame('content-type', 'application/json');
-
-        $response = $client->getResponse();
-        $content = json_decode($response->getContent(), true);
-
-        $this->assertIsInt($content['total']);
-        $this->assertSame($limit, $content['limit']);
-        $this->assertIsInt($content['currentPage']);
-        $this->assertSame($content['pagesCount'], (int) ceil($content['total'] / $content['limit']));
-        $this->assertIsArray($content['items']);
-        $this->assertLessThanOrEqual($limit, count($content['items']));
+        $content = $this->processSuccessResponse($client->getResponse()->getContent());
+        $this->assertPagination($content, $limit);
 
         foreach ($content['items'] as $item) {
-            $this->assertIsInt($item['id']);
-            $this->assertIsString($item['dateCreate']);
-            $this->assertIsString($item['name']);
-            $this->assertIsString($item['type']);
-            $this->assertStringContainsString($item['type'], BonusTypeEnum::class);
+            $this->assertBonus($item);
         }
     }
 }

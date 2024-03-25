@@ -6,35 +6,32 @@ namespace App\Tests\Controller\ClientBonus;
 
 use App\Entity\Client\ClientFactory;
 use App\Repository\Client\ClientRepository;
+use App\Tests\Controller\Traits\AssertClientBonusTrait;
+use App\Tests\Controller\Traits\ProcessResponseTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Response;
 
 class CheckClientBonusControllerTest extends WebTestCase
 {
+    use AssertClientBonusTrait, ProcessResponseTrait;
+
     public function testCheckClientBonusSuccess(): void
     {
         $client = static::createClient();
-        $clientId = $this->getClientId();
+        $clientId = (int) static::getContainer()
+            ->get(ClientRepository::class)
+            ->findOneByEmail(ClientFactory::TEST_EMAIL)
+            ?->getId();
 
         $client->request(
             'POST',
             '/api/client-bonus/' . $clientId,
         );
 
-        $this->assertResponseIsSuccessful();
-        $this->assertResponseHeaderSame('content-type', 'application/json');
-
-        $response = $client->getResponse();
-        $content = json_decode($response->getContent(), true);
-
+        $content = $this->processSuccessResponse($client->getResponse()->getContent());
         $this->assertIsArray($content);
 
         foreach ($content as $item) {
-            $this->assertIsInt($item['id']);
-            $this->assertIsString($item['dateCreate']);
-            $this->assertIsArray($item['client']);
-            $this->assertIsArray($item['bonus']);
-            $this->assertSame($clientId, $item['client']['id']);
+            $this->assertClientBonus($item, $clientId);
         }
     }
 
@@ -48,28 +45,8 @@ class CheckClientBonusControllerTest extends WebTestCase
             '/api/client-bonus/' . $clientId,
         );
 
-        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
-        $this->assertResponseHeaderSame('content-type', 'application/json');
-
-        $content = json_decode($client->getResponse()->getContent(), true);
+        $content = $this->processErrorResponse($client->getResponse()->getContent());
 
         $this->assertSame("Client $clientId not found", $content);
-    }
-
-    private function getClientId(): int
-    {
-        /** @var ClientRepository $clients */
-        $clients = static::getContainer()
-            ->get(ClientRepository::class);
-
-        $qb = $clients->createQueryBuilder('c');
-
-        return (int) $qb
-            ->select('c.id')
-            ->where($qb->expr()->eq('c.email',  ':email'))
-            ->setMaxResults(1)
-            ->setParameter('email', ClientFactory::TEST_EMAIL)
-            ->getQuery()
-            ->getSingleScalarResult();
     }
 }
